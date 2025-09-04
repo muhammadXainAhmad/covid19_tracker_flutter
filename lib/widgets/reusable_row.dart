@@ -1,3 +1,4 @@
+import 'package:covid19_tracker/constants/utils.dart';
 import 'package:flutter/material.dart';
 
 class ReusableRow extends StatelessWidget {
@@ -12,7 +13,10 @@ class ReusableRow extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text(title), Text(value)],
+            children: [
+              Text(title, style: TextStyle(color: whiteClr)),
+              Text(value, style: TextStyle(color: whiteClr)),
+            ],
           ),
         ],
       ),

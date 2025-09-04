@@ -3,10 +3,22 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class MyPieChart extends StatelessWidget {
-  const MyPieChart({super.key});
+  final double total, recovered, death;
+  const MyPieChart({
+    super.key,
+    required this.total,
+    required this.recovered,
+    required this.death,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final double sum = total + recovered + death;
+    String formatPercent(double value) {
+      if (sum == 0) return "0%";
+      return "${((value / sum) * 100).toStringAsFixed(1)}%";
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -19,8 +31,8 @@ class MyPieChart extends StatelessWidget {
             PieChartData(
               sections: [
                 PieChartSectionData(
-                  value: 40,
-                  title: "40%",
+                  value: total,
+                  title: formatPercent(total),
                   titleStyle: TextStyle(
                     color: whiteClr,
                     fontSize: 14,
@@ -30,8 +42,8 @@ class MyPieChart extends StatelessWidget {
                   radius: 100,
                 ),
                 PieChartSectionData(
-                  value: 30,
-                  title: "30%",
+                  value: recovered,
+                  title: formatPercent(recovered),
                   titleStyle: TextStyle(
                     color: whiteClr,
                     fontSize: 14,
@@ -41,8 +53,8 @@ class MyPieChart extends StatelessWidget {
                   radius: 100,
                 ),
                 PieChartSectionData(
-                  value: 30,
-                  title: "30%",
+                  value: death,
+                  title: formatPercent(death),
                   titleStyle: TextStyle(
                     color: whiteClr,
                     fontSize: 14,
@@ -82,7 +94,7 @@ Widget buildLegendItem(Color color, String title) {
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 8),
-        Text(title, style: const TextStyle(fontSize: 14)),
+        Text(title, style: TextStyle(fontSize: 14, color: whiteClr)),
       ],
     ),
   );
