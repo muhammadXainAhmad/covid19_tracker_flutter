@@ -1,6 +1,7 @@
 import 'package:covid19_tracker/methods/stats_services.dart';
 import 'package:covid19_tracker/models/world_stats_model.dart';
 import 'package:covid19_tracker/constants/utils.dart';
+import 'package:covid19_tracker/views/countries_list_screen.dart';
 import 'package:covid19_tracker/widgets/pie_chart.dart';
 import 'package:covid19_tracker/widgets/reusable_row.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +112,14 @@ class _WorldStatsScreenState extends State<WorldStatsScreen>
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CountriesListScreen(),
+                              ),
+                            );
+                          },
                           child: Text(
                             "Track Countries",
                             style: TextStyle(color: whiteClr, fontSize: 15),
