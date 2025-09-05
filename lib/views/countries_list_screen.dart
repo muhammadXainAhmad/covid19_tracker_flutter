@@ -1,5 +1,6 @@
 import 'package:covid19_tracker/constants/utils.dart';
 import 'package:covid19_tracker/methods/stats_services.dart';
+import 'package:covid19_tracker/views/countries_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -53,6 +54,13 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
                     prefixIcon: Icon(Icons.search, color: whiteClr),
                     hintText: "Search by Country Name",
                     hintStyle: TextStyle(color: whiteClr),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        searchController.clear();
+                        setState(() {});
+                      },
+                      icon: Icon(Icons.close, color: whiteClr),
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: cardClr),
                       borderRadius: BorderRadius.circular(40),
@@ -133,19 +141,45 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
                         return ListView.builder(
                           itemCount: filtered.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: Image.network(
-                                filtered[index]["countryInfo"]["flag"],
-                                height: 50,
-                                width: 50,
-                              ),
-                              title: Text(
-                                filtered[index]["country"],
-                                style: TextStyle(color: whiteClr),
-                              ),
-                              subtitle: Text(
-                                filtered[index]["cases"].toString(),
-                                style: TextStyle(color: whiteClr),
+                            return InkWell(
+                              onTap:
+                                  () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => CountriesDetailScreen(
+                                            active: filtered[index]["active"],
+                                            crtical:
+                                                filtered[index]["critical"],
+                                            image:
+                                                filtered[index]["countryInfo"]["flag"],
+                                            name: filtered[index]["country"],
+                                            test: filtered[index]["tests"],
+                                            todayRecovered:
+                                                filtered[index]["todayRecovered"],
+                                            totalCases:
+                                                filtered[index]["cases"],
+                                            totalDeaths:
+                                                filtered[index]["deaths"],
+                                            totalRecovered:
+                                                filtered[index]["recovered"],
+                                          ),
+                                    ),
+                                  ),
+                              child: ListTile(
+                                leading: Image.network(
+                                  filtered[index]["countryInfo"]["flag"],
+                                  height: 50,
+                                  width: 50,
+                                ),
+                                title: Text(
+                                  filtered[index]["country"],
+                                  style: TextStyle(color: whiteClr),
+                                ),
+                                subtitle: Text(
+                                  filtered[index]["cases"].toString(),
+                                  style: TextStyle(color: whiteClr),
+                                ),
                               ),
                             );
                           },

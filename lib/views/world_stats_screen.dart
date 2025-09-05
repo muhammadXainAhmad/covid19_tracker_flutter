@@ -33,6 +33,11 @@ class _WorldStatsScreenState extends State<WorldStatsScreen>
     final screenH = MediaQuery.sizeOf(context).height;
     return Scaffold(
       backgroundColor: bgClr,
+      appBar: AppBar(
+        backgroundColor: bgClr,
+        title: Text("Covid-19 Statistics", style: TextStyle(color: whiteClr)),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 16),
@@ -53,7 +58,7 @@ class _WorldStatsScreenState extends State<WorldStatsScreen>
                   } else {
                     return Column(
                       children: [
-                        SizedBox(height: screenH * 0.05),
+                        SizedBox(height: screenH * 0.025),
                         MyPieChart(
                           total: double.parse(snapshot.data!.cases!.toString()),
                           recovered: double.parse(
@@ -69,38 +74,46 @@ class _WorldStatsScreenState extends State<WorldStatsScreen>
                           ),
                           child: Card(
                             color: cardClr,
-                            child: Column(
-                              children: [
-                                ReusableRow(
-                                  title: "Total",
-                                  value: snapshot.data!.cases!.toString(),
-                                ),
-                                ReusableRow(
-                                  title: "Deaths",
-                                  value: snapshot.data!.deaths!.toString(),
-                                ),
-                                ReusableRow(
-                                  title: "Recovered",
-                                  value: snapshot.data!.recovered!.toString(),
-                                ),
-                                ReusableRow(
-                                  title: "Active",
-                                  value: snapshot.data!.active!.toString(),
-                                ),
-                                ReusableRow(
-                                  title: "Critical",
-                                  value: snapshot.data!.critical!.toString(),
-                                ),
-                                ReusableRow(
-                                  title: "Deaths Today",
-                                  value: snapshot.data!.todayDeaths!.toString(),
-                                ),
-                                ReusableRow(
-                                  title: "Recovered Today",
-                                  value:
-                                      snapshot.data!.todayRecovered!.toString(),
-                                ),
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 18,
+                              ),
+                              child: Column(
+                                children: [
+                                  ReusableRow(
+                                    title: "Total",
+                                    value: snapshot.data!.cases!.toString(),
+                                  ),
+                                  ReusableRow(
+                                    title: "Deaths",
+                                    value: snapshot.data!.deaths!.toString(),
+                                  ),
+                                  ReusableRow(
+                                    title: "Recovered",
+                                    value: snapshot.data!.recovered!.toString(),
+                                  ),
+                                  ReusableRow(
+                                    title: "Active",
+                                    value: snapshot.data!.active!.toString(),
+                                  ),
+                                  ReusableRow(
+                                    title: "Critical",
+                                    value: snapshot.data!.critical!.toString(),
+                                  ),
+                                  ReusableRow(
+                                    title: "Deaths Today",
+                                    value:
+                                        snapshot.data!.todayDeaths!.toString(),
+                                  ),
+                                  ReusableRow(
+                                    title: "Recovered Today",
+                                    value:
+                                        snapshot.data!.todayRecovered!
+                                            .toString(),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -121,7 +134,7 @@ class _WorldStatsScreenState extends State<WorldStatsScreen>
                             );
                           },
                           child: Text(
-                            "Track Countries",
+                            "Track by Countries",
                             style: TextStyle(color: whiteClr, fontSize: 15),
                           ),
                         ),
