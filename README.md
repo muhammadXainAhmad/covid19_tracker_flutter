@@ -1,7 +1,6 @@
 # 🦠 COVID-19 Tracker App  
 
-A modern and responsive **COVID-19 Tracker Application** built with **Flutter**, providing real-time global and country-wise statistics using a public API.  
-The app visualizes worldwide COVID-19 data with charts, displays detailed country statistics, and includes search functionality for quick access.  
+An interactive COVID-19 Tracker Application built with Flutter, featuring animated transitions and loading effects, and providing real-time global and country-wise statistics via a public API. The app visualizes worldwide COVID-19 data with charts, displays detailed country statistics, and includes a search feature for quick access.
 
 ---
 
@@ -54,6 +53,16 @@ The app visualizes worldwide COVID-19 data with charts, displays detailed countr
 <p>
 <img src="screenshots/countryDetail.jpg" width="300"/>
 </p>  
+
+---
+
+## API 🌐  
+
+This app fetches real-time COVID-19 data from the free public API:  
+[disease.sh - Open Disease Data API](https://disease.sh/)  
+
+- **Global Stats Endpoint** → `https://disease.sh/v3/covid-19/all`  
+- **Countries Stats Endpoint** → `https://disease.sh/v3/covid-19/countries`  
 
 ---
 
