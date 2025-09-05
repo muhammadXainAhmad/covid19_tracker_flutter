@@ -1,7 +1,7 @@
 import 'package:covid19_tracker/constants/utils.dart';
 import 'package:covid19_tracker/methods/stats_services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CountriesListScreen extends StatefulWidget {
   const CountriesListScreen({super.key});
@@ -44,6 +44,9 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
             child: Column(
               children: [
                 TextFormField(
+                  onChanged: (value) {
+                    setState(() {});
+                  },
                   style: TextStyle(color: whiteClr),
                   controller: searchController,
                   decoration: InputDecoration(
@@ -60,47 +63,96 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
                     ),
                   ),
                 ),
-                FutureBuilder(
-                  future: StatsServices().fetchCountriesStats(),
-                  builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        !snapshot.hasData) {
-                      return Expanded(
-                        flex: 1,
-                        child: SpinKitFadingCircle(color: whiteClr, size: 50),
-                      );
-                    } else {
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.length,
+                Expanded(
+                  child: FutureBuilder(
+                    future: StatsServices().fetchCountriesStats(),
+                    builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return ListView.builder(
+                          itemCount: 12,
                           itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                ListTile(
-                                  leading: Image(
-                                    height: 50,
-                                    width: 50,
-                                    image: NetworkImage(
-                                      snapshot
-                                          .data![index]["countryInfo"]["flag"],
+                            return Shimmer.fromColors(
+                              baseColor: cardClr,
+                              highlightColor: Colors.grey.shade400,
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    leading: Container(
+                                      height: 50,
+                                      width: 50,
+                                      color: whiteClr,
+                                    ),
+                                    title: Container(
+                                      height: 10,
+                                      width: double.infinity,
+                                      color: whiteClr,
+                                    ),
+                                    subtitle: Container(
+                                      height: 10,
+                                      width: double.infinity,
+                                      color: whiteClr,
                                     ),
                                   ),
-                                  title: Text(
-                                    snapshot.data![index]["country"],
-                                    style: TextStyle(color: whiteClr),
-                                  ),
-                                  subtitle: Text(
-                                    snapshot.data![index]["cases"].toString(),
-                                    style: TextStyle(color: whiteClr),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             );
                           },
-                        ),
-                      );
-                    }
-                  },
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            "Error: ${snapshot.error}",
+                            style: TextStyle(color: whiteClr),
+                          ),
+                        );
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text("No data available"));
+                      } else {
+                        final countries = snapshot.data!;
+                        final query =
+                            searchController.text.toLowerCase().trim();
+
+                        final filtered =
+                            query.isEmpty
+                                ? countries
+                                : countries.where((c) {
+                                  final name =
+                                      c["country"].toString().toLowerCase();
+                                  return name.contains(query);
+                                }).toList();
+
+                        if (filtered.isEmpty) {
+                          return Center(
+                            child: Text(
+                              "No results found",
+                              style: TextStyle(color: whiteClr),
+                            ),
+                          );
+                        }
+
+                        return ListView.builder(
+                          itemCount: filtered.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: Image.network(
+                                filtered[index]["countryInfo"]["flag"],
+                                height: 50,
+                                width: 50,
+                              ),
+                              title: Text(
+                                filtered[index]["country"],
+                                style: TextStyle(color: whiteClr),
+                              ),
+                              subtitle: Text(
+                                filtered[index]["cases"].toString(),
+                                style: TextStyle(color: whiteClr),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
